@@ -1,4 +1,4 @@
-import { Iuser } from "./authInterface";
+import { Iuser } from "../src/authInterface";
 const userURL = "http://localhost:3000/users";
 class LogUser {
   private users: Iuser[];
