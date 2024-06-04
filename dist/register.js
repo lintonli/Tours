@@ -38,7 +38,7 @@ class RegisterUser {
             // console.log(newUser);
             if (response.ok) {
                 console.log("User added successfully");
-                //   window.location.href = "../login.html";
+                window.location.href = "../login.html";
                 return true;
             }
             else {

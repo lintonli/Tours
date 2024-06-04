@@ -1,18 +1,26 @@
 {
   "users": [
     {
-      "id": "c4e7",
+      "id": "b093",
+      "username": "linton",
+      "email": "brendakendi2001@gmail.com",
+      "password": "Lint@123",
+      "role": "Admin"
+    },
+    {
+      "id": "7d0c",
       "username": "lmaina",
       "email": "lintonli162@gmail.com",
       "password": "Linton@123",
       "role": "client"
     },
     {
-      "id": "b093",
-      "username": "linton",
-      "email": "brendakendi2001@gmail.com",
-      "password": "Lint@123",
-      "role": "Admin"
+      "id": "f406",
+      "username": "Patience",
+      "email": "patienceky@gmail.com",
+      "password": "Peshi@123",
+      "role": "client"
     }
-  ]
+  ],
+  "hotels": []
 }

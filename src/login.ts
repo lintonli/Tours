@@ -9,17 +9,22 @@ class LogUser {
   async fetchUsers(): Promise<Iuser[]> {
     const response = await fetch(userURL);
     const data = await response.json();
+    this.users = data;
     return data;
   }
   async authenticate(username: string, password: string): Promise<boolean> {
     const users = await this.fetchUsers();
+    console.log(users);
+
     const user = users.find(
       (auth) => auth.username === username && auth.password === password
     );
+    console.log(user);
+
     if (user?.role === "Admin") {
-      window.location.href = "../signup.html";
+      window.location.href = "../AdminDashboard.html";
     } else {
-      //   window.location.href = ".../index.html";
+      window.location.href = "../index.html";
     }
     if (!user) {
       console.log("user not found");
@@ -41,8 +46,7 @@ loginform.addEventListener("submit", async (e) => {
 
   if (await Login.authenticate(userName, userPassword)) {
     // console.log("login successfull");
-    alert(`welcome ${userName}`);
-    // window.location.href = "../index.html";
+    // window.location.href = "";
   } else {
     console.log("invalid username or password");
   }

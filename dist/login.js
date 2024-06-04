@@ -18,18 +18,21 @@ class LogUser {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield fetch(userURL);
             const data = yield response.json();
+            this.users = data;
             return data;
         });
     }
     authenticate(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const users = yield this.fetchUsers();
+            console.log(users);
             const user = users.find((auth) => auth.username === username && auth.password === password);
+            console.log(user);
             if ((user === null || user === void 0 ? void 0 : user.role) === "Admin") {
-                window.location.href = "../signup.html";
+                window.location.href = "../AdminDashboard.html";
             }
             else {
-                //   window.location.href = ".../index.html";
+                window.location.href = "../index.html";
             }
             if (!user) {
                 console.log("user not found");
@@ -46,8 +49,7 @@ loginform.addEventListener("submit", (e) => __awaiter(void 0, void 0, void 0, fu
     const userPassword = document.getElementById("login-password").value;
     if (yield Login.authenticate(userName, userPassword)) {
         // console.log("login successfull");
-        alert(`welcome ${userName}`);
-        // window.location.href = "../index.html";
+        // window.location.href = "";
     }
     else {
         console.log("invalid username or password");
