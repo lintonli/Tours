@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"dist/login.js":[function(require,module,exports) {
+})({"dist/tour.js":[function(require,module,exports) {
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -154,32 +154,30 @@ var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, gene
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var userURL = "http://localhost:3000/users";
-var LogUser = /*#__PURE__*/function () {
-  function LogUser(users) {
-    _classCallCheck(this, LogUser);
-    this.users = users;
+var toursURL = "http://localhost:3000/tours";
+var Tours = /*#__PURE__*/function () {
+  function Tours(tours, tourElement) {
+    _classCallCheck(this, Tours);
+    this.tourElement = tourElement;
+    this.tours = tours;
   }
-  return _createClass(LogUser, [{
-    key: "fetchUsers",
-    value: function fetchUsers() {
+  return _createClass(Tours, [{
+    key: "fetchTours",
+    value: function fetchTours() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch(userURL);
+              return fetch(toursURL);
             case 2:
               response = _context.sent;
               _context.next = 5;
               return response.json();
             case 5:
               data = _context.sent;
-              this.users = data;
+              this.tours = data;
               return _context.abrupt("return", data);
             case 8:
             case "end":
@@ -189,67 +187,73 @@ var LogUser = /*#__PURE__*/function () {
       }));
     }
   }, {
-    key: "authenticate",
-    value: function authenticate(username, password) {
+    key: "getTours",
+    value: function getTours() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var users, user;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
-              return this.fetchUsers();
-            case 2:
-              users = _context2.sent;
-              console.log(users);
-              user = users.find(function (auth) {
-                return auth.username === username && auth.password === password;
-              });
-              console.log(user);
-              if ((user === null || user === void 0 ? void 0 : user.role) === "Admin") {
-                window.location.href = "../AdminDashboard.html";
-              } else {
-                window.location.href = "../Tour.html";
+              if (!(this.tours.length === 0)) {
+                _context2.next = 3;
+                break;
               }
-              if (!user) {
-                console.log("user not found");
-              }
-              return _context2.abrupt("return", user !== undefined);
-            case 9:
+              _context2.next = 3;
+              return this.fetchTours();
+            case 3:
+              return _context2.abrupt("return", this.tours);
+            case 4:
             case "end":
               return _context2.stop();
           }
         }, _callee2, this);
       }));
     }
+  }, {
+    key: "displayTours",
+    value: function displayTours() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var _this = this;
+        var tours;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              console.log("fetching");
+              _context3.next = 3;
+              return this.fetchTours();
+            case 3:
+              tours = _context3.sent;
+              console.log(tours);
+              this.tourElement.innerHTML = "";
+              tours.forEach(function (tour) {
+                var row = document.createElement("div");
+                row.className = "accomm";
+                row.innerHTML = "\n        <h1>".concat(tour.tourname, "</h1>\n        <img src=\"").concat(tour.tourimage, "\" alt =\"\">\n        <h5>").concat(tour.destination, "<h5>\n        <h8>").concat(tour.description, "</h8>\n        <p>Price: <strong>").concat(tour.price, "</strong></p>\n        <button class=\"bkbtn\">BOOK NOW</button>\n        ");
+                _this.tourElement.appendChild(row);
+              });
+            case 7:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, this);
+      }));
+    }
   }]);
 }();
-var Login = new LogUser([]);
-var loginform = document.getElementById("login");
-loginform.addEventListener("submit", function (e) {
-  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-    var userName, userPassword;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+var tourcontents = document.getElementById("tourcontent");
+var displays = new Tours([], tourcontents);
+document.addEventListener("DOMContentLoaded", function () {
+  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          e.preventDefault();
-          userName = document.getElementById("login-username").value;
-          userPassword = document.getElementById("login-password").value;
-          _context3.next = 5;
-          return Login.authenticate(userName, userPassword);
-        case 5:
-          if (!_context3.sent) {
-            _context3.next = 8;
-            break;
-          }
-          _context3.next = 9;
-          break;
-        case 8:
-          console.log("invalid username or password");
-        case 9:
+          console.log("kkkk");
+          _context4.next = 3;
+          return displays.displayTours();
+        case 3:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3);
+    }, _callee4);
   }));
 });
 },{}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -421,5 +425,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","dist/login.js"], null)
-//# sourceMappingURL=/login.95ce68f8.js.map
+},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","dist/tour.js"], null)
+//# sourceMappingURL=/tour.06012409.js.map

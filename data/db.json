@@ -22,5 +22,23 @@
       "role": "client"
     }
   ],
-  "hotels": []
+  "hotels": [
+    {
+      "id": "dc47",
+      "hotelname": "Sarrova",
+      "hotelimage": "https://media.istockphoto.com/id/1491859442/photo/young-couple-traveler-opening-the-curtains-and-looking-at-the-view-from-the-window-of-a-hotel.jpg?s=1024x1024&w=is&k=20&c=vQLlXVjvieZVkbcLb0q8035WELWz9gnBdzwNsaIPTEw=",
+      "location": "Narok",
+      "rating": 5
+    }
+  ],
+  "tours": [
+    {
+      "id": "9af0",
+      "tourname": "Sekenani Tours",
+      "tourimage": "https://cdn.pixabay.com/photo/2023/06/21/17/09/savannah-8079856_960_720.jpg",
+      "destination": "Mara River",
+      "description": "Explore the seventh wonder of the world",
+      "price": 10000
+    }
+  ]
 }

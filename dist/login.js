@@ -32,7 +32,7 @@ class LogUser {
                 window.location.href = "../AdminDashboard.html";
             }
             else {
-                window.location.href = "../index.html";
+                window.location.href = "../Tour.html";
             }
             if (!user) {
                 console.log("user not found");

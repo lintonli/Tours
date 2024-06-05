@@ -34,7 +34,7 @@
   width: 70%;
   background-color: whitesmoke;
 }
-.home {
+.homec {
   padding: 10px;
   align-items: center;
   display: flex;
@@ -98,14 +98,38 @@
 .Users,
 .Tours,
 .Hotel,
-.Book {
+.Book,
+.add-hotel-form,
+.add-tour-form {
   padding: 10px;
+  display: flex;
   text-align: left;
   display: none;
 }
+.hotelform {
+  display: flex;
+  width: 50%;
+  height: 50%;
+  padding: 20px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid green;
+  flex-direction: column;
+}
+.insert {
+  background-color: green;
+  border: none;
+  width: 100px;
+}
+
 .usertable {
   width: 100%;
   border-collapse: collapse;
+}
+.usertable img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 }
 .usertable th,
 .usertable td {

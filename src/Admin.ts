@@ -2,6 +2,7 @@ const userURL = "http://localhost:3000/users";
 interface ITour {
   id?: string;
   tourname: string;
+  tourimage: string;
   destination: string;
   description: string;
   price: number;
@@ -17,28 +18,55 @@ interface Iuser {
 interface IHotel {
   id?: string;
   hotelname: string;
+  hotelimage: string;
   location: string;
   rating: number;
 }
 
-const homediv = document.querySelector(".home")! as HTMLDivElement;
+const homediv = document.querySelector(".homec")! as HTMLDivElement;
 const tourdiv = document.querySelector(".Tours")! as HTMLDivElement;
 const userdiv = document.querySelector(".Users")! as HTMLDivElement;
 const bookdiv = document.querySelector(".Book")! as HTMLDivElement;
+const addhoteldiv = document.querySelector(
+  ".add-hotel-form"
+)! as HTMLDivElement;
+const addtourdiv = document.querySelector(".add-tour-form")! as HTMLDivElement;
 const hoteldiv = document.querySelector(".Hotel")! as HTMLDivElement;
 
 const homebtn = document.getElementById("home")! as HTMLButtonElement;
 const userbtn = document.getElementById("users")! as HTMLButtonElement;
 const tourbtn = document.getElementById("tours")! as HTMLButtonElement;
 const hotelbtn = document.getElementById("hotel")! as HTMLButtonElement;
+const addhotelbtn = document.getElementById("addHotel")! as HTMLButtonElement;
+const addtourbtn = document.getElementById("addTour")! as HTMLButtonElement;
 const bookbtn = document.getElementById("book")! as HTMLButtonElement;
 class Admin {
   eventListeners() {
     homebtn.addEventListener("click", () => this.showHome());
     userbtn.addEventListener("click", () => this.showUser());
     tourbtn.addEventListener("click", () => this.showTour());
+    addhotelbtn.addEventListener("click", () => this.showAddHotel());
+    addtourbtn.addEventListener("click", () => this.showAddTour());
     hotelbtn.addEventListener("click", () => this.showHotel());
     bookbtn.addEventListener("click", () => this.showBooking());
+  }
+  showAddTour() {
+    addtourdiv.style.display = "block";
+    addhoteldiv.style.display = "none";
+    homediv.style.display = "none";
+    tourdiv.style.display = "none";
+    hoteldiv.style.display = "none";
+    bookdiv.style.display = "none";
+    userdiv.style.display = "none";
+  }
+  showAddHotel() {
+    addhoteldiv.style.display = "block";
+    homediv.style.display = "none";
+    tourdiv.style.display = "none";
+    hoteldiv.style.display = "none";
+    bookdiv.style.display = "none";
+    userdiv.style.display = "none";
+    addtourdiv.style.display = "none";
   }
 
   showHome() {
@@ -47,6 +75,8 @@ class Admin {
     hoteldiv.style.display = "none";
     bookdiv.style.display = "none";
     userdiv.style.display = "none";
+    addhoteldiv.style.display = "none";
+    addtourdiv.style.display = "none";
   }
   showTour() {
     tourdiv.style.display = "block";
@@ -54,13 +84,21 @@ class Admin {
     bookdiv.style.display = "none";
     userdiv.style.display = "none";
     homediv.style.display = "none";
+    addhoteldiv.style.display = "none";
+    addtourdiv.style.display = "none";
+    toursdisplay.displayTours();
   }
   showHotel() {
+    // console.log("hhh");
+
     hoteldiv.style.display = "block";
     bookdiv.style.display = "none";
     userdiv.style.display = "none";
     homediv.style.display = "none";
     tourdiv.style.display = "none";
+    addhoteldiv.style.display = "none";
+    addtourdiv.style.display = "none";
+    hotelDisplay.displayHotels();
   }
   showUser() {
     // console.log("hhhhh");
@@ -70,6 +108,8 @@ class Admin {
     bookdiv.style.display = "none";
     homediv.style.display = "none";
     tourdiv.style.display = "none";
+    addhoteldiv.style.display = "none";
+    addtourdiv.style.display = "none";
     userdisplay.displayUsers();
   }
   showBooking() {
@@ -78,8 +118,11 @@ class Admin {
     homediv.style.display = "none";
     tourdiv.style.display = "none";
     hoteldiv.style.display = "none";
+    addhoteldiv.style.display = "none";
+    addtourdiv.style.display = "none";
   }
 }
+
 let adminListeners = new Admin();
 adminListeners.eventListeners();
 
@@ -142,3 +185,236 @@ class Users {
 }
 
 const userdisplay = new Users([]);
+
+// hotels logic
+
+const hotelURL = "http://localhost:3000/hotels";
+class HotelLaCost {
+  private hotels: IHotel[];
+  private hotelElement: HTMLElement;
+  constructor(hotels: IHotel[], hotelElement: HTMLElement) {
+    this.hotels = hotels;
+    this.hotelElement = hotelElement;
+  }
+  async addHotels(
+    hotelname: string,
+    hotelimage: string,
+    location: string,
+    rating: number
+  ): Promise<void> {
+    const newHotel: IHotel = {
+      //  id?:this.hotels.length + 1,
+      hotelname,
+      hotelimage,
+      location,
+      rating,
+    };
+    if (hotelbutton?.textContent === "Add Hotel") {
+      await fetch(hotelURL, {
+        method: "POST",
+        body: JSON.stringify(newHotel),
+      });
+      // console.log("hhh");
+
+      console.log(`Added: ${hotelname}`);
+      this.displayHotels();
+    }
+  }
+  async fetchHotels(): Promise<IHotel[]> {
+    const response = await fetch(hotelURL);
+    const data = await response.json();
+    this.hotels = data;
+    return data;
+    // console.log(data);
+  }
+  async getHotels(): Promise<IHotel[]> {
+    if (this.hotels.length === 0) {
+      await this.fetchHotels();
+    }
+    return this.hotels;
+  }
+
+  async displayHotels(): Promise<void> {
+    const myhotels = await this.fetchHotels();
+    console.log(myhotels);
+    //const hotelTableBody = document.getElementById("hotelinfo") as HTMLElement;
+    this.hotelElement.innerHTML = "";
+    myhotels.forEach((hotel) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+      <td>${hotel.id}</td>
+    <td>${hotel.hotelname}</td>
+    <td><img src="${hotel.hotelimage}" alt =""></td>
+    <td>${hotel.location}</td>
+    <td>${hotel.rating}</td>
+    <td><i class=" delete-icon" data-id="${hotel.id}"><ion-icon name="trash-outline"></ion-icon></td>
+      `;
+      this.hotelElement.appendChild(row);
+      row.querySelector(".delete-icon")?.addEventListener("click", (event) => {
+        this.deleteHotel(hotel.id);
+      });
+    });
+  }
+  async deleteHotel(hotelId: string | undefined): Promise<void> {
+    if (!hotelId) return;
+    try {
+      const response = await fetch(`${hotelURL}/${hotelId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        this.displayHotels();
+      } else {
+        console.error("Error deleting hotel");
+      }
+    } catch (error) {
+      console.error("Error deleting hotel:", error);
+    }
+  }
+}
+const content = document.getElementById("hotelinfo") as HTMLDivElement;
+const hotelDisplay = new HotelLaCost([], content);
+
+const addHotelForm = document.getElementById("addHotelForm")! as HTMLDivElement;
+const hotelForm = document.getElementById("hotelForm")! as HTMLFormElement;
+const hotelbutton = document.getElementById(
+  "addhotelbtn"
+)! as HTMLButtonElement;
+if (hotelForm) {
+  hotelForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const hotelName = (
+      document.getElementById("hotelName")! as HTMLInputElement
+    ).value;
+    const hotelImage = (
+      document.getElementById("hotelImage")! as HTMLInputElement
+    ).value;
+    const location = (document.getElementById("location")! as HTMLInputElement)
+      .value;
+    const rating = parseInt(
+      (document.getElementById("rating")! as HTMLInputElement).value
+    );
+
+    await hotelDisplay.addHotels(hotelName, hotelImage, location, rating);
+    hotelForm.reset();
+    hotelDisplay.displayHotels();
+  });
+} else {
+  console.log("no hotels to display");
+}
+
+const tourURL = "http://localhost:3000/tours";
+class TourLaCost {
+  private tours: ITour[];
+  private tourElement: HTMLElement;
+
+  constructor(tours: ITour[], tourElement: HTMLElement) {
+    this.tours = tours;
+    this.tourElement = tourElement;
+  }
+  async fetchTours(): Promise<ITour[]> {
+    const response = await fetch(tourURL);
+    const data = await response.json();
+    this.tours = data;
+    return data;
+  }
+  async getTours(): Promise<ITour[]> {
+    if (this.tours.length === 0) {
+      await this.fetchTours();
+    }
+    return this.tours;
+  }
+  async addTour(
+    tourname: string,
+    tourimage: string,
+    description: string,
+    destination: string,
+    price: number
+  ): Promise<void> {
+    const newTour: ITour = {
+      tourname,
+      tourimage,
+      destination,
+      description,
+      price,
+    };
+    if (tourbutton.textContent === "Add Tour")
+      await fetch(tourURL, {
+        method: "POST",
+        body: JSON.stringify(newTour),
+      });
+    console.log(`Added Tour: ${tourname}`);
+  }
+
+  async displayTours(): Promise<void> {
+    const mytours = await this.fetchTours();
+    this.tourElement.innerHTML = "";
+    mytours.forEach((tour) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+      <td>${tour.id}</td>
+    <td>${tour.tourname}</td>
+    <td><img src="${tour.tourimage}" alt =""></td>
+    <td>${tour.destination}</td>
+    <td>${tour.description}</td>
+    <td> ksh${tour.price}</td>
+    <td><i class=" delete-icon" data-id="${tour.id}"><ion-icon name="trash-outline"></ion-icon></td>
+      `;
+      this.tourElement.appendChild(row);
+      row.querySelector(".delete-icon")?.addEventListener("click", (event) => {
+        this.deleteTour(tour.id);
+      });
+    });
+  }
+  async deleteTour(tourId: string | undefined): Promise<void> {
+    if (!tourId) return;
+    try {
+      const response = await fetch(`${tourURL}/${tourId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        this.displayTours();
+      } else {
+        console.error("Error deleting tour");
+      }
+    } catch (error) {
+      console.error("Error deleting tour:", error);
+    }
+  }
+}
+const tourcontent = document.getElementById("tourinfo")! as HTMLDivElement;
+const toursdisplay = new TourLaCost([], tourcontent);
+const addtourform = document.getElementById("addTourForm")! as HTMLDivElement;
+const tourForm = document.getElementById("TourForm")! as HTMLFormElement;
+const tourbutton = document.getElementById("addtourbtn")! as HTMLButtonElement;
+if (tourForm) {
+  tourForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const tourName = (document.getElementById("tourName")! as HTMLInputElement)
+      .value;
+    const tourImage = (
+      document.getElementById("tourImage")! as HTMLInputElement
+    ).value;
+    const tourDestination = (
+      document.getElementById("destination")! as HTMLInputElement
+    ).value;
+    const tourDescription = (
+      document.getElementById("description")! as HTMLInputElement
+    ).value;
+    const tourPrice = parseInt(
+      (document.getElementById("tourPrice")! as HTMLInputElement).value
+    );
+
+    await toursdisplay.addTour(
+      tourName,
+      tourImage,
+      tourDestination,
+      tourDescription,
+      tourPrice
+    );
+    tourForm.reset();
+    toursdisplay.displayTours();
+  });
+} else {
+  console.log("no tours to display");
+}

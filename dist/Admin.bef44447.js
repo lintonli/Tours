@@ -155,15 +155,19 @@ var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, gene
   });
 };
 var userURL = "http://localhost:3000/users";
-var homediv = document.querySelector(".home");
+var homediv = document.querySelector(".homec");
 var tourdiv = document.querySelector(".Tours");
 var userdiv = document.querySelector(".Users");
 var bookdiv = document.querySelector(".Book");
+var addhoteldiv = document.querySelector(".add-hotel-form");
+var addtourdiv = document.querySelector(".add-tour-form");
 var hoteldiv = document.querySelector(".Hotel");
 var homebtn = document.getElementById("home");
 var userbtn = document.getElementById("users");
 var tourbtn = document.getElementById("tours");
 var hotelbtn = document.getElementById("hotel");
+var addhotelbtn = document.getElementById("addHotel");
+var addtourbtn = document.getElementById("addTour");
 var bookbtn = document.getElementById("book");
 var Admin = /*#__PURE__*/function () {
   function Admin() {
@@ -182,12 +186,40 @@ var Admin = /*#__PURE__*/function () {
       tourbtn.addEventListener("click", function () {
         return _this.showTour();
       });
+      addhotelbtn.addEventListener("click", function () {
+        return _this.showAddHotel();
+      });
+      addtourbtn.addEventListener("click", function () {
+        return _this.showAddTour();
+      });
       hotelbtn.addEventListener("click", function () {
         return _this.showHotel();
       });
       bookbtn.addEventListener("click", function () {
         return _this.showBooking();
       });
+    }
+  }, {
+    key: "showAddTour",
+    value: function showAddTour() {
+      addtourdiv.style.display = "block";
+      addhoteldiv.style.display = "none";
+      homediv.style.display = "none";
+      tourdiv.style.display = "none";
+      hoteldiv.style.display = "none";
+      bookdiv.style.display = "none";
+      userdiv.style.display = "none";
+    }
+  }, {
+    key: "showAddHotel",
+    value: function showAddHotel() {
+      addhoteldiv.style.display = "block";
+      homediv.style.display = "none";
+      tourdiv.style.display = "none";
+      hoteldiv.style.display = "none";
+      bookdiv.style.display = "none";
+      userdiv.style.display = "none";
+      addtourdiv.style.display = "none";
     }
   }, {
     key: "showHome",
@@ -197,6 +229,8 @@ var Admin = /*#__PURE__*/function () {
       hoteldiv.style.display = "none";
       bookdiv.style.display = "none";
       userdiv.style.display = "none";
+      addhoteldiv.style.display = "none";
+      addtourdiv.style.display = "none";
     }
   }, {
     key: "showTour",
@@ -206,15 +240,22 @@ var Admin = /*#__PURE__*/function () {
       bookdiv.style.display = "none";
       userdiv.style.display = "none";
       homediv.style.display = "none";
+      addhoteldiv.style.display = "none";
+      addtourdiv.style.display = "none";
+      toursdisplay.displayTours();
     }
   }, {
     key: "showHotel",
     value: function showHotel() {
+      // console.log("hhh");
       hoteldiv.style.display = "block";
       bookdiv.style.display = "none";
       userdiv.style.display = "none";
       homediv.style.display = "none";
       tourdiv.style.display = "none";
+      addhoteldiv.style.display = "none";
+      addtourdiv.style.display = "none";
+      hotelDisplay.displayHotels();
     }
   }, {
     key: "showUser",
@@ -225,6 +266,8 @@ var Admin = /*#__PURE__*/function () {
       bookdiv.style.display = "none";
       homediv.style.display = "none";
       tourdiv.style.display = "none";
+      addhoteldiv.style.display = "none";
+      addtourdiv.style.display = "none";
       userdisplay.displayUsers();
     }
   }, {
@@ -235,6 +278,8 @@ var Admin = /*#__PURE__*/function () {
       homediv.style.display = "none";
       tourdiv.style.display = "none";
       hoteldiv.style.display = "none";
+      addhoteldiv.style.display = "none";
+      addtourdiv.style.display = "none";
     }
   }]);
 }();
@@ -365,6 +410,392 @@ var Users = /*#__PURE__*/function () {
   }]);
 }();
 var userdisplay = new Users([]);
+// hotels logic
+var hotelURL = "http://localhost:3000/hotels";
+var HotelLaCost = /*#__PURE__*/function () {
+  function HotelLaCost(hotels, hotelElement) {
+    _classCallCheck(this, HotelLaCost);
+    this.hotels = hotels;
+    this.hotelElement = hotelElement;
+  }
+  return _createClass(HotelLaCost, [{
+    key: "addHotels",
+    value: function addHotels(hotelname, hotelimage, location, rating) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var newHotel;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              newHotel = {
+                //  id?:this.hotels.length + 1,
+                hotelname: hotelname,
+                hotelimage: hotelimage,
+                location: location,
+                rating: rating
+              };
+              if (!((hotelbutton === null || hotelbutton === void 0 ? void 0 : hotelbutton.textContent) === "Add Hotel")) {
+                _context5.next = 6;
+                break;
+              }
+              _context5.next = 4;
+              return fetch(hotelURL, {
+                method: "POST",
+                body: JSON.stringify(newHotel)
+              });
+            case 4:
+              // console.log("hhh");
+              console.log("Added: ".concat(hotelname));
+              this.displayHotels();
+            case 6:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee5, this);
+      }));
+    }
+  }, {
+    key: "fetchHotels",
+    value: function fetchHotels() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        var response, data;
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return fetch(hotelURL);
+            case 2:
+              response = _context6.sent;
+              _context6.next = 5;
+              return response.json();
+            case 5:
+              data = _context6.sent;
+              this.hotels = data;
+              return _context6.abrupt("return", data);
+            case 8:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6, this);
+      }));
+    }
+  }, {
+    key: "getHotels",
+    value: function getHotels() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              if (!(this.hotels.length === 0)) {
+                _context7.next = 3;
+                break;
+              }
+              _context7.next = 3;
+              return this.fetchHotels();
+            case 3:
+              return _context7.abrupt("return", this.hotels);
+            case 4:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7, this);
+      }));
+    }
+  }, {
+    key: "displayHotels",
+    value: function displayHotels() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+        var _this3 = this;
+        var myhotels;
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
+            case 0:
+              _context8.next = 2;
+              return this.fetchHotels();
+            case 2:
+              myhotels = _context8.sent;
+              console.log(myhotels);
+              //const hotelTableBody = document.getElementById("hotelinfo") as HTMLElement;
+              this.hotelElement.innerHTML = "";
+              myhotels.forEach(function (hotel) {
+                var _a;
+                var row = document.createElement("tr");
+                row.innerHTML = "\n      <td>".concat(hotel.id, "</td>\n    <td>").concat(hotel.hotelname, "</td>\n    <td><img src=\"").concat(hotel.hotelimage, "\" alt =\"\"></td>\n    <td>").concat(hotel.location, "</td>\n    <td>").concat(hotel.rating, "</td>\n    <td><i class=\" delete-icon\" data-id=\"").concat(hotel.id, "\"><ion-icon name=\"trash-outline\"></ion-icon></td>\n      ");
+                _this3.hotelElement.appendChild(row);
+                (_a = row.querySelector(".delete-icon")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (event) {
+                  _this3.deleteHotel(hotel.id);
+                });
+              });
+            case 6:
+            case "end":
+              return _context8.stop();
+          }
+        }, _callee8, this);
+      }));
+    }
+  }, {
+    key: "deleteHotel",
+    value: function deleteHotel(hotelId) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
+            case 0:
+              if (hotelId) {
+                _context9.next = 2;
+                break;
+              }
+              return _context9.abrupt("return");
+            case 2:
+              _context9.prev = 2;
+              _context9.next = 5;
+              return fetch("".concat(hotelURL, "/").concat(hotelId), {
+                method: "DELETE"
+              });
+            case 5:
+              response = _context9.sent;
+              if (response.ok) {
+                this.displayHotels();
+              } else {
+                console.error("Error deleting hotel");
+              }
+              _context9.next = 12;
+              break;
+            case 9:
+              _context9.prev = 9;
+              _context9.t0 = _context9["catch"](2);
+              console.error("Error deleting hotel:", _context9.t0);
+            case 12:
+            case "end":
+              return _context9.stop();
+          }
+        }, _callee9, this, [[2, 9]]);
+      }));
+    }
+  }]);
+}();
+var content = document.getElementById("hotelinfo");
+var hotelDisplay = new HotelLaCost([], content);
+var addHotelForm = document.getElementById("addHotelForm");
+var hotelForm = document.getElementById("hotelForm");
+var hotelbutton = document.getElementById("addhotelbtn");
+if (hotelForm) {
+  hotelForm.addEventListener("submit", function (e) {
+    return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
+      var hotelName, hotelImage, location, rating;
+      return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+        while (1) switch (_context10.prev = _context10.next) {
+          case 0:
+            e.preventDefault();
+            hotelName = document.getElementById("hotelName").value;
+            hotelImage = document.getElementById("hotelImage").value;
+            location = document.getElementById("location").value;
+            rating = parseInt(document.getElementById("rating").value);
+            _context10.next = 7;
+            return hotelDisplay.addHotels(hotelName, hotelImage, location, rating);
+          case 7:
+            hotelForm.reset();
+            hotelDisplay.displayHotels();
+          case 9:
+          case "end":
+            return _context10.stop();
+        }
+      }, _callee10);
+    }));
+  });
+} else {
+  console.log("no hotels to display");
+}
+var tourURL = "http://localhost:3000/tours";
+var TourLaCost = /*#__PURE__*/function () {
+  function TourLaCost(tours, tourElement) {
+    _classCallCheck(this, TourLaCost);
+    this.tours = tours;
+    this.tourElement = tourElement;
+  }
+  return _createClass(TourLaCost, [{
+    key: "fetchTours",
+    value: function fetchTours() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+        var response, data;
+        return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+          while (1) switch (_context11.prev = _context11.next) {
+            case 0:
+              _context11.next = 2;
+              return fetch(tourURL);
+            case 2:
+              response = _context11.sent;
+              _context11.next = 5;
+              return response.json();
+            case 5:
+              data = _context11.sent;
+              this.tours = data;
+              return _context11.abrupt("return", data);
+            case 8:
+            case "end":
+              return _context11.stop();
+          }
+        }, _callee11, this);
+      }));
+    }
+  }, {
+    key: "getTours",
+    value: function getTours() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+        return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+          while (1) switch (_context12.prev = _context12.next) {
+            case 0:
+              if (!(this.tours.length === 0)) {
+                _context12.next = 3;
+                break;
+              }
+              _context12.next = 3;
+              return this.fetchTours();
+            case 3:
+              return _context12.abrupt("return", this.tours);
+            case 4:
+            case "end":
+              return _context12.stop();
+          }
+        }, _callee12, this);
+      }));
+    }
+  }, {
+    key: "addTour",
+    value: function addTour(tourname, tourimage, description, destination, price) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
+        var newTour;
+        return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+          while (1) switch (_context13.prev = _context13.next) {
+            case 0:
+              newTour = {
+                tourname: tourname,
+                tourimage: tourimage,
+                destination: destination,
+                description: description,
+                price: price
+              };
+              if (!(tourbutton.textContent === "Add Tour")) {
+                _context13.next = 4;
+                break;
+              }
+              _context13.next = 4;
+              return fetch(tourURL, {
+                method: "POST",
+                body: JSON.stringify(newTour)
+              });
+            case 4:
+              console.log("Added Tour: ".concat(tourname));
+            case 5:
+            case "end":
+              return _context13.stop();
+          }
+        }, _callee13);
+      }));
+    }
+  }, {
+    key: "displayTours",
+    value: function displayTours() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
+        var _this4 = this;
+        var mytours;
+        return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+          while (1) switch (_context14.prev = _context14.next) {
+            case 0:
+              _context14.next = 2;
+              return this.fetchTours();
+            case 2:
+              mytours = _context14.sent;
+              this.tourElement.innerHTML = "";
+              mytours.forEach(function (tour) {
+                var _a;
+                var row = document.createElement("tr");
+                row.innerHTML = "\n      <td>".concat(tour.id, "</td>\n    <td>").concat(tour.tourname, "</td>\n    <td><img src=\"").concat(tour.tourimage, "\" alt =\"\"></td>\n    <td>").concat(tour.destination, "</td>\n    <td>").concat(tour.description, "</td>\n    <td> ksh").concat(tour.price, "</td>\n    <td><i class=\" delete-icon\" data-id=\"").concat(tour.id, "\"><ion-icon name=\"trash-outline\"></ion-icon></td>\n      ");
+                _this4.tourElement.appendChild(row);
+                (_a = row.querySelector(".delete-icon")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (event) {
+                  _this4.deleteTour(tour.id);
+                });
+              });
+            case 5:
+            case "end":
+              return _context14.stop();
+          }
+        }, _callee14, this);
+      }));
+    }
+  }, {
+    key: "deleteTour",
+    value: function deleteTour(tourId) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee15() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+          while (1) switch (_context15.prev = _context15.next) {
+            case 0:
+              if (tourId) {
+                _context15.next = 2;
+                break;
+              }
+              return _context15.abrupt("return");
+            case 2:
+              _context15.prev = 2;
+              _context15.next = 5;
+              return fetch("".concat(tourURL, "/").concat(tourId), {
+                method: "DELETE"
+              });
+            case 5:
+              response = _context15.sent;
+              if (response.ok) {
+                this.displayTours();
+              } else {
+                console.error("Error deleting tour");
+              }
+              _context15.next = 12;
+              break;
+            case 9:
+              _context15.prev = 9;
+              _context15.t0 = _context15["catch"](2);
+              console.error("Error deleting tour:", _context15.t0);
+            case 12:
+            case "end":
+              return _context15.stop();
+          }
+        }, _callee15, this, [[2, 9]]);
+      }));
+    }
+  }]);
+}();
+var tourcontent = document.getElementById("tourinfo");
+var toursdisplay = new TourLaCost([], tourcontent);
+var addtourform = document.getElementById("addTourForm");
+var tourForm = document.getElementById("TourForm");
+var tourbutton = document.getElementById("addtourbtn");
+if (tourForm) {
+  tourForm.addEventListener("submit", function (e) {
+    return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee16() {
+      var tourName, tourImage, tourDestination, tourDescription, tourPrice;
+      return _regeneratorRuntime().wrap(function _callee16$(_context16) {
+        while (1) switch (_context16.prev = _context16.next) {
+          case 0:
+            e.preventDefault();
+            tourName = document.getElementById("tourName").value;
+            tourImage = document.getElementById("tourImage").value;
+            tourDestination = document.getElementById("destination").value;
+            tourDescription = document.getElementById("description").value;
+            tourPrice = parseInt(document.getElementById("tourPrice").value);
+            _context16.next = 8;
+            return toursdisplay.addTour(tourName, tourImage, tourDestination, tourDescription, tourPrice);
+          case 8:
+            tourForm.reset();
+            toursdisplay.displayTours();
+          case 10:
+          case "end":
+            return _context16.stop();
+        }
+      }, _callee16);
+    }));
+  });
+} else {
+  console.log("no tours to display");
+}
 },{}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -390,7 +821,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53861" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50625" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

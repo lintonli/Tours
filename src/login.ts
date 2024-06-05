@@ -24,7 +24,7 @@ class LogUser {
     if (user?.role === "Admin") {
       window.location.href = "../AdminDashboard.html";
     } else {
-      window.location.href = "../index.html";
+      window.location.href = "../Tour.html";
     }
     if (!user) {
       console.log("user not found");

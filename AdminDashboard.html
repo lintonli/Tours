@@ -26,17 +26,29 @@
           <button class="tours" id="tours">TOURS</button>
         </div>
         <div class="prof">
+          <ion-icon name="add"></ion-icon>
+          <button class="add-tour" id="addTour">Add Tour</button>
+        </div>
+        <div class="prof">
           <ion-icon name="bed-outline"></ion-icon>
           <button class="hotel" id="hotel">HOTEL</button>
+        </div>
+        <div class="prof">
+          <ion-icon name="add"></ion-icon>
+          <button class="add-hotel" id="addHotel">Add Hotel</button>
         </div>
         <div class="prof">
           <ion-icon name="reorder-four-outline"></ion-icon>
           <button class="book" id="book">BOOKING</button>
         </div>
+        <div class="prof">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <a href="index.html">Logout</a>
+        </div>
       </div>
       <div class="content">
         <!-- <p>i am header</p> -->
-        <div class="home">
+        <div class="homec">
           <div class="first-admin-div">
             <div class="left-first-div">
               <div class="backgroundForIcon">
@@ -100,33 +112,79 @@
                 <tr>
                   <th>ID</th>
                   <th>Tourname</th>
+                  <th>TourImage</th>
                   <th>Destination</th>
                   <th>Description</th>
                   <th>Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody class="tourinfo"></tbody>
+              <tbody class="tourinfo" id="tourinfo"></tbody>
             </table>
           </div>
+        </div>
+        <!-- addtours -->
+        <div class="add-tour-form" id="addTourForm">
+          <h3>Add Tour</h3>
+          <form class="hotelform" id="TourForm">
+            <label for="tourName">Tour Name:</label>
+            <input type="text" id="tourName" name="tourName" required />
+            <label for="image-url">Image</label>
+            <input type="text" name="tourImage" id="tourImage" required />
+            <label for="Destination">Destination:</label>
+            <input type="text" id="destination" name="destination" required />
+            <label for="Description">Description:</label>
+            <input type="text" id="description" name="description" required />
+            <label for="Price">Price:</label>
+            <input type="number" name="tourPrice" id="tourPrice" />
+            <button class="insert" type="submit" id="addtourbtn">
+              Add Tour
+            </button>
+          </form>
         </div>
         <!-- hotels -->
         <div class="Hotel">
           <h2>Hotels</h2>
+
           <div class="user-table">
             <table class="usertable" id="usertable">
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Hotelname</th>
+                  <th>Hotel Image</th>
                   <th>Location</th>
                   <th>Rating</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody class="hotelinfo"></tbody>
+              <tbody class="hotelinfo" id="hotelinfo"></tbody>
             </table>
           </div>
+        </div>
+        <!-- addhotel -->
+        <div class="add-hotel-form" id="addHotelForm">
+          <h3>Add Hotel</h3>
+          <form class="hotelform" id="hotelForm">
+            <label for="hotelName">Hotel Name:</label>
+            <input type="text" id="hotelName" name="hotelName" required />
+            <label for="image-url">Image</label>
+            <input type="text" name="hotelImage" id="hotelImage" required />
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required />
+            <label for="rating">Rating:</label>
+            <input
+              type="number"
+              id="rating"
+              name="rating"
+              min="1"
+              max="5"
+              required
+            />
+            <button class="insert" type="submit" id="addhotelbtn">
+              Add Hotel
+            </button>
+          </form>
         </div>
         <!-- booking -->
         <div class="Book">
