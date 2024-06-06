@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const userURL = "http://localhost:3000/users";
+const bookURLs = "http://localhost:3000/bookings";
 const homediv = document.querySelector(".homec");
 const tourdiv = document.querySelector(".Tours");
 const userdiv = document.querySelector(".Users");
@@ -100,6 +101,7 @@ class Admin {
         hoteldiv.style.display = "none";
         addhoteldiv.style.display = "none";
         addtourdiv.style.display = "none";
+        bookdisplay.displayBookings();
     }
 }
 let adminListeners = new Admin();
@@ -139,15 +141,45 @@ class Users {
             <td>${user.email}</td>
             <td>${user.role}</td>
             <td><i class=" delete-icon" data-id="${user.id}"><ion-icon name="trash-outline"></ion-icon></td>
+           
         
         `;
                 userTableBody.appendChild(row);
                 (_a = row.querySelector(".delete-icon")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (event) => {
                     this.deleteUser(user.id);
+                    // row.querySelector(".update-icon")?.addEventListener("click", () => {
+                    //   this.updateUser(
+                    //     user.id!,
+                    //     user.email,
+                    //     user.password,
+                    //     user.username,
+                    //     user.role
+                    //   );
+                    // });
                 });
             });
         });
     }
+    // async updateUser(
+    //   id: string,
+    //   username: string,
+    //   email: string,
+    //   password: string,
+    //   role: string
+    // ) {
+    //   let updatedUser = {
+    //     id,
+    //     username,
+    //     email,
+    //     password,
+    //     role,
+    //   };
+    //   await fetch(`${userURL}/${id}`, {
+    //     method: "PUT",
+    //     body: JSON.stringify(updatedUser),
+    //   });
+    //   this.displayUsers();
+    // }
     deleteUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!userId)
@@ -385,3 +417,77 @@ if (tourForm) {
 else {
     console.log("no tours to display");
 }
+class Book {
+    // private bookElement: HTMLElement;
+    constructor(books) {
+        // this.bookElement = bookElement;
+        this.books = books;
+    }
+    fetchBooking() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield fetch(bookURLs);
+            const data = yield response.json();
+            this.books = data;
+            return data;
+        });
+    }
+    getBookings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.books.length === 0) {
+                yield this.fetchBooking();
+            }
+            return this.books;
+        });
+    }
+    displayBookings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const books = yield this.fetchBooking();
+            const userTableBody = document.getElementById("bookinfo");
+            userTableBody.innerHTML = "";
+            books.forEach((book) => {
+                var _a;
+                const row = document.createElement("tr");
+                row.innerHTML = `
+       
+            <td>${book.id}</td>
+            <td>${book.username}</td>
+            <td>${book.tourname || ""}</td>
+            <td>${book.hotelname || ""}</td>
+            <td>${book.date}</td>
+            <td><i class=" delete-icon" data-id="${book.id}"><ion-icon name="trash-outline"></ion-icon></td>
+        
+        `;
+                userTableBody.appendChild(row);
+                (_a = row.querySelector(".delete-icon")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (event) => {
+                    this.deletebook(book.id);
+                });
+            });
+        });
+    }
+    deletebook(bookId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!bookId)
+                return;
+            try {
+                const response = yield fetch(`${bookURLs}/${bookId}`, {
+                    method: "DELETE",
+                });
+                if (response.ok) {
+                    this.displayBookings();
+                }
+                else {
+                    console.error("Error deleting tour");
+                }
+            }
+            catch (error) {
+                console.error("Error deleting tour:", error);
+            }
+        });
+    }
+}
+// const bookcontent = document.getElementById("bookinfo")! as HTMLDivElement;
+// const bookdisplay = new Book([]);
+// document.addEventListener("DOMContentLoaded", async () => {
+const bookdisplay = new Book([]);
+bookdisplay.displayBookings();
+// });

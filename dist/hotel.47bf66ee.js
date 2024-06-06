@@ -155,53 +155,66 @@ var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, gene
   });
 };
 var hotelsURL = "http://localhost:3000/hotels";
+var bookingsURLs = "http://localhost:3000/bookings";
+var userURLS = "http://localhost:3000/users";
 var Hotels = /*#__PURE__*/function () {
   function Hotels(hotels, hotelElement) {
     _classCallCheck(this, Hotels);
+    this.currentUser = null;
     this.hotelElement = hotelElement;
     this.hotels = hotels;
   }
   return _createClass(Hotels, [{
-    key: "fetchHotels",
-    value: function fetchHotels() {
+    key: "fetchUser",
+    value: function fetchUser(userId) {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var response, data;
+        var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch(hotelsURL);
+              return fetch("".concat(userURLS, "/").concat(userId));
             case 2:
               response = _context.sent;
-              _context.next = 5;
+              if (!response.ok) {
+                _context.next = 9;
+                break;
+              }
+              _context.next = 6;
               return response.json();
-            case 5:
-              data = _context.sent;
-              this.hotels = data;
-              return _context.abrupt("return", data);
-            case 8:
+            case 6:
+              return _context.abrupt("return", _context.sent);
+            case 9:
+              return _context.abrupt("return", null);
+            case 10:
             case "end":
               return _context.stop();
           }
-        }, _callee, this);
+        }, _callee);
       }));
     }
   }, {
-    key: "getHotels",
-    value: function getHotels() {
+    key: "getCurrentUser",
+    value: function getCurrentUser() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var userid;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              if (!(this.hotels.length === 0)) {
-                _context2.next = 3;
+              userid = localStorage.getItem("currentUserId");
+              if (!userid) {
+                _context2.next = 7;
                 break;
               }
-              _context2.next = 3;
-              return this.fetchHotels();
-            case 3:
-              return _context2.abrupt("return", this.hotels);
+              _context2.next = 4;
+              return this.fetchUser(userid);
             case 4:
+              this.currentUser = _context2.sent;
+              _context2.next = 8;
+              break;
+            case 7:
+              console.log("no user is logged in");
+            case 8:
             case "end":
               return _context2.stop();
           }
@@ -209,30 +222,148 @@ var Hotels = /*#__PURE__*/function () {
       }));
     }
   }, {
-    key: "displayHotels",
-    value: function displayHotels() {
+    key: "fetchHotels",
+    value: function fetchHotels() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var _this = this;
-        var hotels;
+        var response, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return this.fetchHotels();
+              return fetch(hotelsURL);
             case 2:
-              hotels = _context3.sent;
-              this.hotelElement.innerHTML = "";
-              hotels.forEach(function (hotel) {
-                var row = document.createElement("div");
-                row.className = "accomm";
-                row.innerHTML = "\n        <h2> ".concat(hotel.hotelname, "</h1>\n        <img src=\"").concat(hotel.hotelimage, "\" alt=\"\">\n        <h4>").concat(hotel.location, "</h4>\n        <p> Rating: <strong>").concat(hotel.rating, "</strong></p>\n        <button class=\"bkbtn\">BOOK NOW</button>\n        ");
-                _this.hotelElement.appendChild(row);
-              });
+              response = _context3.sent;
+              _context3.next = 5;
+              return response.json();
             case 5:
+              data = _context3.sent;
+              this.hotels = data;
+              return _context3.abrupt("return", data);
+            case 8:
             case "end":
               return _context3.stop();
           }
         }, _callee3, this);
+      }));
+    }
+  }, {
+    key: "getHotels",
+    value: function getHotels() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              if (!(this.hotels.length === 0)) {
+                _context4.next = 3;
+                break;
+              }
+              _context4.next = 3;
+              return this.fetchHotels();
+            case 3:
+              return _context4.abrupt("return", this.hotels);
+            case 4:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, this);
+      }));
+    }
+  }, {
+    key: "displayHotels",
+    value: function displayHotels() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        var _this = this;
+        var hotels;
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return this.getCurrentUser();
+            case 2:
+              _context6.next = 4;
+              return this.fetchHotels();
+            case 4:
+              hotels = _context6.sent;
+              this.hotelElement.innerHTML = "";
+              hotels.forEach(function (hotel) {
+                var _a;
+                var row = document.createElement("div");
+                row.className = "accomm";
+                row.innerHTML = "\n        <h2> ".concat(hotel.hotelname, "</h1>\n        <img src=\"").concat(hotel.hotelimage, "\" alt=\"\">\n        <h4>").concat(hotel.location, "</h4>\n        <p> Rating: <strong>").concat(hotel.rating, "</strong></p>\n\n<label for=\"bookingDate\">Choose a booking date:</label>\n        <input type=\"date\" id=\"bookingDate-").concat(hotel.id, "\" class=\"bookingDate\" required>\n\n        <button class=\"bkbtn\">BOOK NOW</button>\n        ");
+                _this.hotelElement.appendChild(row);
+                (_a = row.querySelector(".bkbtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                  return __awaiter(_this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+                    var bookingDateInput, bookingDate;
+                    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+                      while (1) switch (_context5.prev = _context5.next) {
+                        case 0:
+                          bookingDateInput = document.getElementById("bookingDate-".concat(hotel.id));
+                          bookingDate = bookingDateInput.value;
+                          if (bookingDate) {
+                            _context5.next = 5;
+                            break;
+                          }
+                          alert("Please select a booking date.");
+                          return _context5.abrupt("return");
+                        case 5:
+                          if (!this.currentUser) {
+                            _context5.next = 10;
+                            break;
+                          }
+                          _context5.next = 8;
+                          return this.bookHotel(this.currentUser.id, this.currentUser.username, hotel.id, hotel.hotelname, bookingDate);
+                        case 8:
+                          _context5.next = 11;
+                          break;
+                        case 10:
+                          alert("user not logged in");
+                        case 11:
+                        case "end":
+                          return _context5.stop();
+                      }
+                    }, _callee5, this);
+                  }));
+                });
+              });
+            case 7:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6, this);
+      }));
+    }
+  }, {
+    key: "bookHotel",
+    value: function bookHotel(userId, username, hotelId, hotelname, bookingDate) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        var newBooking, response;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              newBooking = {
+                userId: userId,
+                username: username,
+                hotelId: hotelId,
+                hotelname: hotelname,
+                date: bookingDate
+              };
+              _context7.next = 3;
+              return fetch(bookingsURLs, {
+                method: "POST",
+                body: JSON.stringify(newBooking)
+              });
+            case 3:
+              response = _context7.sent;
+              if (response.ok) {
+                alert("Successfully booked tour: ".concat(hotelname));
+              } else {
+                console.log("error when booking");
+              }
+            case 5:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7);
       }));
     }
   }]);
@@ -267,7 +398,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50625" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62017" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

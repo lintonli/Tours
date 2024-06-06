@@ -28,16 +28,48 @@ class LogUser {
             console.log(users);
             const user = users.find((auth) => auth.username === username && auth.password === password);
             console.log(user);
-            if ((user === null || user === void 0 ? void 0 : user.role) === "Admin") {
-                window.location.href = "../AdminDashboard.html";
+            // if(user){
+            //    localStorage.setItem("currentUserId", user.id?);
+            // }
+            //     if (user?.role === "Admin") {
+            //       window.location.href = "../AdminDashboard.html";
+            //     } else {
+            //       window.location.href = "../index.html";
+            //     }
+            //     if (!user) {
+            //       console.log("user not found");
+            //     }
+            //     return user !== undefined;
+            //   }
+            if (user && user.id) {
+                try {
+                    if (typeof Storage !== "undefined") {
+                        console.log("Local Storage is supported by this browser.");
+                        console.log("Current User ID:", user.id);
+                        localStorage.setItem("currentUserId", user.id);
+                        console.log("Stored User ID:", localStorage.getItem("currentUserId"));
+                        if (user.role === "Admin") {
+                            window.location.href = "../AdminDashboard.html";
+                        }
+                        else {
+                            window.location.href = "../index.html";
+                        }
+                        return true;
+                    }
+                    else {
+                        console.error("Local Storage is not supported by this browser.");
+                        return false;
+                    }
+                }
+                catch (error) {
+                    console.error("Error storing user ID in local storage:", error);
+                    return false;
+                }
             }
             else {
-                window.location.href = "../Tour.html";
+                console.log("User not found or ID is undefined");
+                return false;
             }
-            if (!user) {
-                console.log("user not found");
-            }
-            return user !== undefined;
         });
     }
 }

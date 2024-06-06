@@ -155,53 +155,66 @@ var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, gene
   });
 };
 var toursURL = "http://localhost:3000/tours";
+var bookingsURL = "http://localhost:3000/bookings";
+var usersURL = "http://localhost:3000/users";
 var Tours = /*#__PURE__*/function () {
   function Tours(tours, tourElement) {
     _classCallCheck(this, Tours);
+    this.currentUser = null;
     this.tourElement = tourElement;
     this.tours = tours;
   }
   return _createClass(Tours, [{
-    key: "fetchTours",
-    value: function fetchTours() {
+    key: "fetchUser",
+    value: function fetchUser(userId) {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var response, data;
+        var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch(toursURL);
+              return fetch("".concat(usersURL, "/").concat(userId));
             case 2:
               response = _context.sent;
-              _context.next = 5;
+              if (!response.ok) {
+                _context.next = 9;
+                break;
+              }
+              _context.next = 6;
               return response.json();
-            case 5:
-              data = _context.sent;
-              this.tours = data;
-              return _context.abrupt("return", data);
-            case 8:
+            case 6:
+              return _context.abrupt("return", _context.sent);
+            case 9:
+              return _context.abrupt("return", null);
+            case 10:
             case "end":
               return _context.stop();
           }
-        }, _callee, this);
+        }, _callee);
       }));
     }
   }, {
-    key: "getTours",
-    value: function getTours() {
+    key: "getCurrentUser",
+    value: function getCurrentUser() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var userid;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              if (!(this.tours.length === 0)) {
-                _context2.next = 3;
+              userid = localStorage.getItem("currentUserId");
+              if (!userid) {
+                _context2.next = 7;
                 break;
               }
-              _context2.next = 3;
-              return this.fetchTours();
-            case 3:
-              return _context2.abrupt("return", this.tours);
+              _context2.next = 4;
+              return this.fetchUser(userid);
             case 4:
+              this.currentUser = _context2.sent;
+              _context2.next = 8;
+              break;
+            case 7:
+              console.log("no user is logged in");
+            case 8:
             case "end":
               return _context2.stop();
           }
@@ -209,32 +222,149 @@ var Tours = /*#__PURE__*/function () {
       }));
     }
   }, {
-    key: "displayTours",
-    value: function displayTours() {
+    key: "fetchTours",
+    value: function fetchTours() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var _this = this;
-        var tours;
+        var response, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              console.log("fetching");
-              _context3.next = 3;
-              return this.fetchTours();
-            case 3:
-              tours = _context3.sent;
-              console.log(tours);
-              this.tourElement.innerHTML = "";
-              tours.forEach(function (tour) {
-                var row = document.createElement("div");
-                row.className = "accomm";
-                row.innerHTML = "\n        <h1>".concat(tour.tourname, "</h1>\n        <img src=\"").concat(tour.tourimage, "\" alt =\"\">\n        <h5>").concat(tour.destination, "<h5>\n        <h8>").concat(tour.description, "</h8>\n        <p>Price: <strong>").concat(tour.price, "</strong></p>\n        <button class=\"bkbtn\">BOOK NOW</button>\n        ");
-                _this.tourElement.appendChild(row);
-              });
-            case 7:
+              _context3.next = 2;
+              return fetch(toursURL);
+            case 2:
+              response = _context3.sent;
+              _context3.next = 5;
+              return response.json();
+            case 5:
+              data = _context3.sent;
+              this.tours = data;
+              return _context3.abrupt("return", data);
+            case 8:
             case "end":
               return _context3.stop();
           }
         }, _callee3, this);
+      }));
+    }
+  }, {
+    key: "getTours",
+    value: function getTours() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              if (!(this.tours.length === 0)) {
+                _context4.next = 3;
+                break;
+              }
+              _context4.next = 3;
+              return this.fetchTours();
+            case 3:
+              return _context4.abrupt("return", this.tours);
+            case 4:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, this);
+      }));
+    }
+  }, {
+    key: "displayTours",
+    value: function displayTours() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        var _this = this;
+        var tours;
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return this.getCurrentUser();
+            case 2:
+              _context6.next = 4;
+              return this.fetchTours();
+            case 4:
+              tours = _context6.sent;
+              // console.log(tours);
+              this.tourElement.innerHTML = "";
+              tours.forEach(function (tour) {
+                var _a;
+                var row = document.createElement("div");
+                row.className = "accomm";
+                row.innerHTML = "\n        <h1>".concat(tour.tourname, "</h1>\n        <img src=\"").concat(tour.tourimage, "\" alt =\"\">\n        <h5>").concat(tour.destination, "<h5>\n        <h8>").concat(tour.description, "</h8>\n        <p>Price: <strong>").concat(tour.price, "</strong></p>\n\n <label for=\"bookingDate-").concat(tour.id, "\">Choose a booking date:</label>\n        <input type=\"date\" id=\"bookingDate-").concat(tour.id, "\" class=\"bookingDate\" required>\n\n        <button class=\"bkbtn\">BOOK NOW</button>\n        ");
+                _this.tourElement.appendChild(row);
+                (_a = row.querySelector(".bkbtn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                  return __awaiter(_this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+                    var bookingDateInput, bookingDate;
+                    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+                      while (1) switch (_context5.prev = _context5.next) {
+                        case 0:
+                          bookingDateInput = document.getElementById("bookingDate-".concat(tour.id));
+                          bookingDate = bookingDateInput.value;
+                          if (bookingDate) {
+                            _context5.next = 5;
+                            break;
+                          }
+                          alert("Please select a booking date.");
+                          return _context5.abrupt("return");
+                        case 5:
+                          if (!this.currentUser) {
+                            _context5.next = 10;
+                            break;
+                          }
+                          _context5.next = 8;
+                          return this.bookTour(this.currentUser.id, this.currentUser.username, tour.id, tour.tourname, bookingDate);
+                        case 8:
+                          _context5.next = 11;
+                          break;
+                        case 10:
+                          alert("user not logged in");
+                        case 11:
+                        case "end":
+                          return _context5.stop();
+                      }
+                    }, _callee5, this);
+                  }));
+                });
+              });
+            case 7:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6, this);
+      }));
+    }
+  }, {
+    key: "bookTour",
+    value: function bookTour(userId, username, tourId, tourname, bookingDate) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        var newBooking, response;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              newBooking = {
+                userId: userId,
+                username: username,
+                tourId: tourId,
+                tourname: tourname,
+                date: bookingDate
+              };
+              _context7.next = 3;
+              return fetch(bookingsURL, {
+                method: "POST",
+                body: JSON.stringify(newBooking)
+              });
+            case 3:
+              response = _context7.sent;
+              if (response.ok) {
+                alert("Successfully booked tour: ".concat(tourname));
+              } else {
+                console.log("error when booking");
+              }
+            case 5:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7);
       }));
     }
   }]);
@@ -242,18 +372,17 @@ var Tours = /*#__PURE__*/function () {
 var tourcontents = document.getElementById("tourcontent");
 var displays = new Tours([], tourcontents);
 document.addEventListener("DOMContentLoaded", function () {
-  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
+  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
         case 0:
-          console.log("kkkk");
-          _context4.next = 3;
+          _context8.next = 2;
           return displays.displayTours();
-        case 3:
+        case 2:
         case "end":
-          return _context4.stop();
+          return _context8.stop();
       }
-    }, _callee4);
+    }, _callee8);
   }));
 });
 },{}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -281,7 +410,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50625" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62017" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"dist/login.js":[function(require,module,exports) {
+})({"dist/book.js":[function(require,module,exports) {
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -154,32 +154,30 @@ var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, gene
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
 };
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var userURL = "http://localhost:3000/users";
-var LogUser = /*#__PURE__*/function () {
-  function LogUser(users) {
-    _classCallCheck(this, LogUser);
-    this.users = users;
+var bookURL = "http://localhost:3000/bookings";
+var Bookings = /*#__PURE__*/function () {
+  function Bookings(bookings, bookingElement) {
+    _classCallCheck(this, Bookings);
+    this.bookingElement = bookingElement;
+    this.bookings = bookings;
   }
-  return _createClass(LogUser, [{
-    key: "fetchUsers",
-    value: function fetchUsers() {
+  return _createClass(Bookings, [{
+    key: "fetchBookings",
+    value: function fetchBookings() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch(userURL);
+              return fetch(bookURL);
             case 2:
               response = _context.sent;
               _context.next = 5;
               return response.json();
             case 5:
               data = _context.sent;
-              this.users = data;
+              this.bookings = data;
               return _context.abrupt("return", data);
             case 8:
             case "end":
@@ -189,109 +187,146 @@ var LogUser = /*#__PURE__*/function () {
       }));
     }
   }, {
-    key: "authenticate",
-    value: function authenticate(username, password) {
+    key: "getBookings",
+    value: function getBookings() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var users, user;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
-              return this.fetchUsers();
-            case 2:
-              users = _context2.sent;
-              console.log(users);
-              user = users.find(function (auth) {
-                return auth.username === username && auth.password === password;
-              });
-              console.log(user);
-              // if(user){
-              //    localStorage.setItem("currentUserId", user.id?);
-              // }
-              //     if (user?.role === "Admin") {
-              //       window.location.href = "../AdminDashboard.html";
-              //     } else {
-              //       window.location.href = "../index.html";
-              //     }
-              //     if (!user) {
-              //       console.log("user not found");
-              //     }
-              //     return user !== undefined;
-              //   }
-              if (!(user && user.id)) {
-                _context2.next = 27;
+              if (!(this.bookings.length === 0)) {
+                _context2.next = 3;
                 break;
               }
-              _context2.prev = 7;
-              if (!(typeof Storage !== "undefined")) {
-                _context2.next = 17;
-                break;
-              }
-              console.log("Local Storage is supported by this browser.");
-              console.log("Current User ID:", user.id);
-              localStorage.setItem("currentUserId", user.id);
-              console.log("Stored User ID:", localStorage.getItem("currentUserId"));
-              if (user.role === "Admin") {
-                window.location.href = "../AdminDashboard.html";
-              } else {
-                window.location.href = "../index.html";
-              }
-              return _context2.abrupt("return", true);
-            case 17:
-              console.error("Local Storage is not supported by this browser.");
-              return _context2.abrupt("return", false);
-            case 19:
-              _context2.next = 25;
-              break;
-            case 21:
-              _context2.prev = 21;
-              _context2.t0 = _context2["catch"](7);
-              console.error("Error storing user ID in local storage:", _context2.t0);
-              return _context2.abrupt("return", false);
-            case 25:
-              _context2.next = 29;
-              break;
-            case 27:
-              console.log("User not found or ID is undefined");
-              return _context2.abrupt("return", false);
-            case 29:
+              _context2.next = 3;
+              return this.fetchBookings();
+            case 3:
+              return _context2.abrupt("return", this.bookings);
+            case 4:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, this, [[7, 21]]);
+        }, _callee2, this);
+      }));
+    }
+  }, {
+    key: "displayBookings",
+    value: function displayBookings() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        var _this = this;
+        var booking;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return this.fetchBookings();
+            case 2:
+              booking = _context4.sent;
+              console.log(booking);
+              this.bookingElement.innerHTML = "";
+              booking.forEach(function (book) {
+                var _a;
+                var row = document.createElement("div");
+                row.className = "booking";
+                row.innerHTML = "\n        <h4> Booking ID: ".concat(book.id, "</h4>\n        <p>User:").concat(book.username, "</p>\n         ").concat(book.tourname ? "<p>Tour: ".concat(book.tourname, "</p>") : "", "\n        ").concat(book.hotelname ? "<p>Hotel: ".concat(book.hotelname, "</p>") : "", "\n        <p>Date: ").concat(book.date, "</p>\n        <button class=\"delete-booking\" data-id=\"").concat(book.id, "\">Delete</button>\n        ");
+                _this.bookingElement.appendChild(row);
+                (_a = row.querySelector(".delete-booking")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () {
+                  return __awaiter(_this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+                    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+                      while (1) switch (_context3.prev = _context3.next) {
+                        case 0:
+                          _context3.next = 2;
+                          return this.deleteBooking(book.id);
+                        case 2:
+                          this.displayBookings();
+                        case 3:
+                        case "end":
+                          return _context3.stop();
+                      }
+                    }, _callee3, this);
+                  }));
+                });
+              });
+            case 6:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, this);
+      }));
+    }
+  }, {
+    key: "deleteBooking",
+    value: function deleteBooking(bookingId) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              if (bookingId) {
+                _context5.next = 2;
+                break;
+              }
+              return _context5.abrupt("return");
+            case 2:
+              _context5.prev = 2;
+              _context5.next = 5;
+              return fetch("".concat(bookURL, "/").concat(bookingId), {
+                method: "DELETE"
+              });
+            case 5:
+              response = _context5.sent;
+              if (response.ok) {
+                this.displayBookings();
+              } else {
+                console.error("Error deleting booking");
+              }
+              _context5.next = 12;
+              break;
+            case 9:
+              _context5.prev = 9;
+              _context5.t0 = _context5["catch"](2);
+              console.error("Error deleting booking:", _context5.t0);
+            case 12:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee5, this, [[2, 9]]);
       }));
     }
   }]);
 }();
-var Login = new LogUser([]);
-var loginform = document.getElementById("login");
-loginform.addEventListener("submit", function (e) {
-  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-    var userName, userPassword;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+document.addEventListener("DOMContentLoaded", function () {
+  return __awaiter(void 0, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+    var bookingContent, bookingDisplay;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          e.preventDefault();
-          userName = document.getElementById("login-username").value;
-          userPassword = document.getElementById("login-password").value;
-          _context3.next = 5;
-          return Login.authenticate(userName, userPassword);
-        case 5:
-          if (!_context3.sent) {
-            _context3.next = 8;
+          bookingContent = document.getElementById("bookingContent");
+          if (!bookingContent) {
+            _context6.next = 7;
             break;
           }
-          _context3.next = 9;
+          bookingDisplay = new Bookings([], bookingContent);
+          _context6.next = 5;
+          return bookingDisplay.displayBookings();
+        case 5:
+          _context6.next = 8;
           break;
+        case 7:
+          console.error('Element with ID "bookingContent" not found');
         case 8:
-          console.log("invalid username or password");
-        case 9:
         case "end":
-          return _context3.stop();
+          return _context6.stop();
       }
-    }, _callee3);
+    }, _callee6);
   }));
 });
+// const bookingContent = document.getElementById(
+//   "bookingContent"
+// )! as HTMLDivElement;
+// const bookingdisplay = new Bookings([], bookingContent);
+// document.addEventListener("DOMContentLoaded", async () => {
+//   await bookingdisplay.displayBookings();
+// });
 },{}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -317,7 +352,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62101" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62017" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -461,5 +496,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","dist/login.js"], null)
-//# sourceMappingURL=/login.95ce68f8.js.map
+},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","dist/book.js"], null)
+//# sourceMappingURL=/book.fbae693c.js.map

@@ -40,5 +40,23 @@
       "description": "Explore the seventh wonder of the world",
       "price": 10000
     }
+  ],
+  "bookings": [
+    {
+      "id": "d826",
+      "userId": "7d0c",
+      "username": "lmaina",
+      "tourId": "9af0",
+      "tourname": "Sekenani Tours",
+      "date": "2024-06-06"
+    },
+    {
+      "id": "9925",
+      "userId": "7d0c",
+      "username": "lmaina",
+      "hotelId": "dc47",
+      "hotelname": "Sarrova",
+      "date": "2024-06-06"
+    }
   ]
 }

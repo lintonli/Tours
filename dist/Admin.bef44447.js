@@ -155,6 +155,7 @@ var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, gene
   });
 };
 var userURL = "http://localhost:3000/users";
+var bookURLs = "http://localhost:3000/bookings";
 var homediv = document.querySelector(".homec");
 var tourdiv = document.querySelector(".Tours");
 var userdiv = document.querySelector(".Users");
@@ -280,6 +281,7 @@ var Admin = /*#__PURE__*/function () {
       hoteldiv.style.display = "none";
       addhoteldiv.style.display = "none";
       addtourdiv.style.display = "none";
+      bookdisplay.displayBookings();
     }
   }]);
 }();
@@ -355,10 +357,19 @@ var Users = /*#__PURE__*/function () {
               users.forEach(function (user) {
                 var _a;
                 var row = document.createElement("tr");
-                row.innerHTML = "\n       \n            <td>".concat(user.id, "</td>\n            <td>").concat(user.username, "</td>\n            <td>").concat(user.email, "</td>\n            <td>").concat(user.role, "</td>\n            <td><i class=\" delete-icon\" data-id=\"").concat(user.id, "\"><ion-icon name=\"trash-outline\"></ion-icon></td>\n        \n        ");
+                row.innerHTML = "\n       \n            <td>".concat(user.id, "</td>\n            <td>").concat(user.username, "</td>\n            <td>").concat(user.email, "</td>\n            <td>").concat(user.role, "</td>\n            <td><i class=\" delete-icon\" data-id=\"").concat(user.id, "\"><ion-icon name=\"trash-outline\"></ion-icon></td>\n           \n        \n        ");
                 userTableBody.appendChild(row);
                 (_a = row.querySelector(".delete-icon")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (event) {
                   _this2.deleteUser(user.id);
+                  // row.querySelector(".update-icon")?.addEventListener("click", () => {
+                  //   this.updateUser(
+                  //     user.id!,
+                  //     user.email,
+                  //     user.password,
+                  //     user.username,
+                  //     user.role
+                  //   );
+                  // });
                 });
               });
             case 7:
@@ -368,6 +379,26 @@ var Users = /*#__PURE__*/function () {
         }, _callee3, this);
       }));
     }
+    // async updateUser(
+    //   id: string,
+    //   username: string,
+    //   email: string,
+    //   password: string,
+    //   role: string
+    // ) {
+    //   let updatedUser = {
+    //     id,
+    //     username,
+    //     email,
+    //     password,
+    //     role,
+    //   };
+    //   await fetch(`${userURL}/${id}`, {
+    //     method: "PUT",
+    //     body: JSON.stringify(updatedUser),
+    //   });
+    //   this.displayUsers();
+    // }
   }, {
     key: "deleteUser",
     value: function deleteUser(userId) {
@@ -796,6 +827,137 @@ if (tourForm) {
 } else {
   console.log("no tours to display");
 }
+var Book = /*#__PURE__*/function () {
+  // private bookElement: HTMLElement;
+  function Book(books) {
+    _classCallCheck(this, Book);
+    // this.bookElement = bookElement;
+    this.books = books;
+  }
+  return _createClass(Book, [{
+    key: "fetchBooking",
+    value: function fetchBooking() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee17() {
+        var response, data;
+        return _regeneratorRuntime().wrap(function _callee17$(_context17) {
+          while (1) switch (_context17.prev = _context17.next) {
+            case 0:
+              _context17.next = 2;
+              return fetch(bookURLs);
+            case 2:
+              response = _context17.sent;
+              _context17.next = 5;
+              return response.json();
+            case 5:
+              data = _context17.sent;
+              this.books = data;
+              return _context17.abrupt("return", data);
+            case 8:
+            case "end":
+              return _context17.stop();
+          }
+        }, _callee17, this);
+      }));
+    }
+  }, {
+    key: "getBookings",
+    value: function getBookings() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee18() {
+        return _regeneratorRuntime().wrap(function _callee18$(_context18) {
+          while (1) switch (_context18.prev = _context18.next) {
+            case 0:
+              if (!(this.books.length === 0)) {
+                _context18.next = 3;
+                break;
+              }
+              _context18.next = 3;
+              return this.fetchBooking();
+            case 3:
+              return _context18.abrupt("return", this.books);
+            case 4:
+            case "end":
+              return _context18.stop();
+          }
+        }, _callee18, this);
+      }));
+    }
+  }, {
+    key: "displayBookings",
+    value: function displayBookings() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee19() {
+        var _this5 = this;
+        var books, userTableBody;
+        return _regeneratorRuntime().wrap(function _callee19$(_context19) {
+          while (1) switch (_context19.prev = _context19.next) {
+            case 0:
+              _context19.next = 2;
+              return this.fetchBooking();
+            case 2:
+              books = _context19.sent;
+              userTableBody = document.getElementById("bookinfo");
+              userTableBody.innerHTML = "";
+              books.forEach(function (book) {
+                var _a;
+                var row = document.createElement("tr");
+                row.innerHTML = "\n       \n            <td>".concat(book.id, "</td>\n            <td>").concat(book.username, "</td>\n            <td>").concat(book.tourname || "", "</td>\n            <td>").concat(book.hotelname || "", "</td>\n            <td>").concat(book.date, "</td>\n            <td><i class=\" delete-icon\" data-id=\"").concat(book.id, "\"><ion-icon name=\"trash-outline\"></ion-icon></td>\n        \n        ");
+                userTableBody.appendChild(row);
+                (_a = row.querySelector(".delete-icon")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (event) {
+                  _this5.deletebook(book.id);
+                });
+              });
+            case 6:
+            case "end":
+              return _context19.stop();
+          }
+        }, _callee19, this);
+      }));
+    }
+  }, {
+    key: "deletebook",
+    value: function deletebook(bookId) {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee20() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee20$(_context20) {
+          while (1) switch (_context20.prev = _context20.next) {
+            case 0:
+              if (bookId) {
+                _context20.next = 2;
+                break;
+              }
+              return _context20.abrupt("return");
+            case 2:
+              _context20.prev = 2;
+              _context20.next = 5;
+              return fetch("".concat(bookURLs, "/").concat(bookId), {
+                method: "DELETE"
+              });
+            case 5:
+              response = _context20.sent;
+              if (response.ok) {
+                this.displayBookings();
+              } else {
+                console.error("Error deleting tour");
+              }
+              _context20.next = 12;
+              break;
+            case 9:
+              _context20.prev = 9;
+              _context20.t0 = _context20["catch"](2);
+              console.error("Error deleting tour:", _context20.t0);
+            case 12:
+            case "end":
+              return _context20.stop();
+          }
+        }, _callee20, this, [[2, 9]]);
+      }));
+    }
+  }]);
+}(); // const bookcontent = document.getElementById("bookinfo")! as HTMLDivElement;
+// const bookdisplay = new Book([]);
+// document.addEventListener("DOMContentLoaded", async () => {
+var bookdisplay = new Book([]);
+bookdisplay.displayBookings();
+// });
 },{}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -821,7 +983,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50625" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62101" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
