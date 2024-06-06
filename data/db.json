@@ -1,18 +1,11 @@
 {
   "users": [
     {
-      "id": "b093",
-      "username": "linton",
-      "email": "brendakendi2001@gmail.com",
-      "password": "Lint@123",
-      "role": "Admin"
-    },
-    {
       "id": "7d0c",
       "username": "lmaina",
       "email": "lintonli162@gmail.com",
       "password": "Linton@123",
-      "role": "client"
+      "role": "Admin"
     },
     {
       "id": "f406",
@@ -20,11 +13,18 @@
       "email": "patienceky@gmail.com",
       "password": "Peshi@123",
       "role": "client"
+    },
+    {
+      "id": "db53",
+      "username": "joe",
+      "email": "john@gmail.com",
+      "password": "Joe@123",
+      "role": "client"
     }
   ],
   "hotels": [
     {
-      "id": "dc47",
+      "id": "1abd",
       "hotelname": "Sarrova",
       "hotelimage": "https://media.istockphoto.com/id/1491859442/photo/young-couple-traveler-opening-the-curtains-and-looking-at-the-view-from-the-window-of-a-hotel.jpg?s=1024x1024&w=is&k=20&c=vQLlXVjvieZVkbcLb0q8035WELWz9gnBdzwNsaIPTEw=",
       "location": "Narok",
@@ -33,12 +33,12 @@
   ],
   "tours": [
     {
-      "id": "9af0",
+      "id": "94b8",
       "tourname": "Sekenani Tours",
       "tourimage": "https://cdn.pixabay.com/photo/2023/06/21/17/09/savannah-8079856_960_720.jpg",
-      "destination": "Mara River",
-      "description": "Explore the seventh wonder of the world",
-      "price": 10000
+      "destination": "Explore the seventh wonder of the world",
+      "description": "Mara River",
+      "price": 12
     }
   ],
   "bookings": [
@@ -46,16 +46,8 @@
       "id": "d826",
       "userId": "7d0c",
       "username": "lmaina",
-      "tourId": "9af0",
+      "tourId": null,
       "tourname": "Sekenani Tours",
-      "date": "2024-06-06"
-    },
-    {
-      "id": "9925",
-      "userId": "7d0c",
-      "username": "lmaina",
-      "hotelId": "dc47",
-      "hotelname": "Sarrova",
       "date": "2024-06-06"
     }
   ]

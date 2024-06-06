@@ -218,15 +218,15 @@ class HotelLaCost {
                 location,
                 rating,
             };
-            if ((hotelbutton === null || hotelbutton === void 0 ? void 0 : hotelbutton.textContent) === "Add Hotel") {
-                yield fetch(hotelURL, {
-                    method: "POST",
-                    body: JSON.stringify(newHotel),
-                });
-                // console.log("hhh");
-                console.log(`Added: ${hotelname}`);
-                this.displayHotels();
-            }
+            // if (hotelbutton?.textContent === "Add Hotel") {
+            yield fetch(hotelURL, {
+                method: "POST",
+                body: JSON.stringify(newHotel),
+            });
+            // console.log("hhh");
+            console.log(`Added: ${hotelname}`);
+            this.displayHotels();
+            // }
         });
     }
     fetchHotels() {
@@ -343,12 +343,17 @@ class TourLaCost {
                 description,
                 price,
             };
-            if (tourbutton.textContent === "Add Tour")
-                yield fetch(tourURL, {
-                    method: "POST",
-                    body: JSON.stringify(newTour),
-                });
+            // if (tourbutton.textContent === "Add Tour") {
+            // console.log("hhhhh")
+            yield fetch(tourURL, {
+                method: "POST",
+                body: JSON.stringify(newTour),
+            });
+            console.log(newTour);
             console.log(`Added Tour: ${tourname}`);
+            // } else {
+            //   console.log(tourbutton.textContent);
+            // }
         });
     }
     displayTours() {
@@ -409,8 +414,9 @@ if (tourForm) {
         const tourDestination = document.getElementById("destination").value;
         const tourDescription = document.getElementById("description").value;
         const tourPrice = parseInt(document.getElementById("tourPrice").value);
+        console.log(tourName);
         yield toursdisplay.addTour(tourName, tourImage, tourDestination, tourDescription, tourPrice);
-        tourForm.reset();
+        // tourForm.reset();
         toursdisplay.displayTours();
     }));
 }

@@ -463,21 +463,18 @@ var HotelLaCost = /*#__PURE__*/function () {
                 hotelimage: hotelimage,
                 location: location,
                 rating: rating
-              };
-              if (!((hotelbutton === null || hotelbutton === void 0 ? void 0 : hotelbutton.textContent) === "Add Hotel")) {
-                _context5.next = 6;
-                break;
-              }
-              _context5.next = 4;
+              }; // if (hotelbutton?.textContent === "Add Hotel") {
+              _context5.next = 3;
               return fetch(hotelURL, {
                 method: "POST",
                 body: JSON.stringify(newHotel)
               });
-            case 4:
+            case 3:
               // console.log("hhh");
               console.log("Added: ".concat(hotelname));
               this.displayHotels();
-            case 6:
+              // }
+            case 5:
             case "end":
               return _context5.stop();
           }
@@ -704,18 +701,19 @@ var TourLaCost = /*#__PURE__*/function () {
                 destination: destination,
                 description: description,
                 price: price
-              };
-              if (!(tourbutton.textContent === "Add Tour")) {
-                _context13.next = 4;
-                break;
-              }
-              _context13.next = 4;
+              }; // if (tourbutton.textContent === "Add Tour") {
+              // console.log("hhhhh")
+              _context13.next = 3;
               return fetch(tourURL, {
                 method: "POST",
                 body: JSON.stringify(newTour)
               });
-            case 4:
+            case 3:
+              console.log(newTour);
               console.log("Added Tour: ".concat(tourname));
+              // } else {
+              //   console.log(tourbutton.textContent);
+              // }
             case 5:
             case "end":
               return _context13.stop();
@@ -812,10 +810,11 @@ if (tourForm) {
             tourDestination = document.getElementById("destination").value;
             tourDescription = document.getElementById("description").value;
             tourPrice = parseInt(document.getElementById("tourPrice").value);
-            _context16.next = 8;
+            console.log(tourName);
+            _context16.next = 9;
             return toursdisplay.addTour(tourName, tourImage, tourDestination, tourDescription, tourPrice);
-          case 8:
-            tourForm.reset();
+          case 9:
+            // tourForm.reset();
             toursdisplay.displayTours();
           case 10:
           case "end":
@@ -983,7 +982,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62101" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50032" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

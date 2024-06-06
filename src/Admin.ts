@@ -251,16 +251,16 @@ class HotelLaCost {
       location,
       rating,
     };
-    if (hotelbutton?.textContent === "Add Hotel") {
-      await fetch(hotelURL, {
-        method: "POST",
-        body: JSON.stringify(newHotel),
-      });
-      // console.log("hhh");
+    // if (hotelbutton?.textContent === "Add Hotel") {
+    await fetch(hotelURL, {
+      method: "POST",
+      body: JSON.stringify(newHotel),
+    });
+    // console.log("hhh");
 
-      console.log(`Added: ${hotelname}`);
-      this.displayHotels();
-    }
+    console.log(`Added: ${hotelname}`);
+    this.displayHotels();
+    // }
   }
   async fetchHotels(): Promise<IHotel[]> {
     const response = await fetch(hotelURL);
@@ -379,12 +379,18 @@ class TourLaCost {
       description,
       price,
     };
-    if (tourbutton.textContent === "Add Tour")
-      await fetch(tourURL, {
-        method: "POST",
-        body: JSON.stringify(newTour),
-      });
+
+    // if (tourbutton.textContent === "Add Tour") {
+    // console.log("hhhhh")
+    await fetch(tourURL, {
+      method: "POST",
+      body: JSON.stringify(newTour),
+    });
+    console.log(newTour);
     console.log(`Added Tour: ${tourname}`);
+    // } else {
+    //   console.log(tourbutton.textContent);
+    // }
   }
 
   async displayTours(): Promise<void> {
@@ -446,6 +452,7 @@ if (tourForm) {
     const tourPrice = parseInt(
       (document.getElementById("tourPrice")! as HTMLInputElement).value
     );
+    console.log(tourName);
 
     await toursdisplay.addTour(
       tourName,
@@ -454,7 +461,7 @@ if (tourForm) {
       tourDescription,
       tourPrice
     );
-    tourForm.reset();
+    // tourForm.reset();
     toursdisplay.displayTours();
   });
 } else {
